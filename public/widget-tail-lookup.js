@@ -2,34 +2,37 @@
   'use strict';
 
   var STYLE = '\
-.jng-widget{font-family:inherit;color:#111;max-width:100%;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:14px;padding:22px 24px}\
+.jng-widget{font-family:"Urbanist",-apple-system,sans-serif;color:#141212;max-width:100%;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:14px;padding:24px 26px}\
 .jng-widget *{box-sizing:border-box}\
-.jng-widget h3{margin:0 0 16px;font-size:15px;text-transform:uppercase;letter-spacing:.04em;color:#111;position:relative;padding-left:14px}\
-.jng-widget h3:before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:4px;background:#b59e27;border-radius:2px}\
-.jng-lookup-row{display:flex;gap:8px;max-width:420px}\
-.jng-search-input{flex:1;padding:10px 12px;font-size:15px;border:1px solid rgba(0,0,0,.15);border-radius:8px;outline:none;background:#fff;color:#111;text-transform:uppercase}\
+.jng-eyebrow{display:inline-flex;align-items:center;gap:10px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;padding:6px 18px 6px 6px;margin:0 0 18px;font-size:13px;font-weight:400;color:#141212}\
+.jng-eyebrow .dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
+.jng-lookup-row{display:flex;gap:10px;max-width:420px}\
+.jng-lookup-row[hidden]{display:none}\
+.jng-search-input{flex:1;padding:12px 20px;font-size:15px;font-family:inherit;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212}\
+.jng-search-input.jng-uppercase{text-transform:uppercase}\
 .jng-search-input:focus{border-color:#b59e27;box-shadow:0 0 0 3px rgba(181,158,39,.15)}\
-.jng-lookup-btn{padding:10px 18px;font-size:14px;font-weight:700;border-radius:8px;border:1px solid #b59e27;background:#b59e27;color:#111;cursor:pointer;white-space:nowrap}\
+.jng-lookup-btn{padding:12px 22px;font-size:14px;font-weight:400;font-family:inherit;border-radius:1000px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;cursor:pointer;white-space:nowrap}\
 .jng-lookup-btn:hover{background:#a08c22;border-color:#a08c22}\
-.jng-clear{border:1px solid rgba(0,0,0,.15);background:#fff;color:#111;cursor:pointer;font-size:12px;padding:5px 10px;border-radius:20px}\
+.jng-clear{border:.8px solid rgba(0,0,0,.15);background:#fff;color:#141212;cursor:pointer;font-size:13px;font-family:inherit;padding:9px 20px;border-radius:1000px}\
 .jng-clear:hover{border-color:#b59e27;color:#b59e27}\
-.jng-selected{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}\
-.jng-selected-label{font-size:18px;font-weight:700;color:#111}\
+.jng-selected{display:flex;align-items:center;gap:18px;margin:4px 0 20px;flex-wrap:wrap}\
+.jng-selected[hidden]{display:none}\
+.jng-selected-label{font-family:"Inter",sans-serif;font-size:20px;font-weight:300;letter-spacing:-.02em;color:#141212}\
 .jng-ac-summary{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px}\
-.jng-stat{min-width:130px;flex:1 1 130px;border:1px solid rgba(0,0,0,.15);border-top:3px solid #b59e27;border-radius:8px;padding:10px 12px;background:#fff}\
-.jng-stat .v{font-size:17px;font-weight:700;color:#111}\
-.jng-stat .l{font-size:12px;color:#666;margin-top:2px}\
+.jng-stat{min-width:130px;flex:1 1 130px;border:.8px solid rgba(0,0,0,.15);border-top:3px solid #b59e27;border-radius:12px;padding:12px 14px;background:#fff}\
+.jng-stat .v{font-family:"Inter",sans-serif;font-size:18px;font-weight:500;color:#141212}\
+.jng-stat .l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
 .jng-companies{list-style:none;margin:0;padding:0}\
-.jng-companies li{padding:10px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;border-left:3px solid #b59e27;padding-left:10px}\
+.jng-companies li{padding:12px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;border-left:3px solid #b59e27;padding-left:12px}\
 .jng-companies li:last-child{border-bottom:none}\
-.jng-companies .role{font-weight:700;color:#111;text-transform:uppercase;font-size:11px;letter-spacing:.03em;color:#b59e27}\
-.jng-companies .name{font-weight:700;color:#111;margin-top:2px}\
-.jng-companies .meta{color:#666;font-size:12px;margin-top:2px}\
-.jng-status{margin-top:12px;font-size:13px;color:#666}\
-.jng-status.jng-error{color:#111;font-weight:600}\
+.jng-companies .role{font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.03em;color:#b59e27}\
+.jng-companies .name{font-family:"Inter",sans-serif;font-weight:500;color:#141212;margin-top:2px}\
+.jng-companies .meta{color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
+.jng-status{margin-top:12px;font-size:13px;color:rgba(20,18,18,.55)}\
+.jng-status.jng-error{color:#141212;font-weight:600}\
 .jng-status.jng-error:before{content:"\\26A0  "}\
-.jng-empty{color:#666;font-size:13px;padding:6px 0}\
-.jng-subhead{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#666;margin:18px 0 8px}\
+.jng-empty{color:rgba(20,18,18,.55);font-size:13px;padding:6px 0}\
+.jng-subhead{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:rgba(20,18,18,.55);margin:20px 0 8px}\
 ';
 
   function injectStyle() {
@@ -145,10 +148,12 @@
     root.innerHTML = '';
     root.classList.add('jng-widget');
 
-    root.appendChild(el('h3', { html: 'Tail Number Lookup' }));
+    root.appendChild(
+      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'dot' }), document.createTextNode('Tail Number Lookup')])
+    );
 
     var input = el('input', {
-      class: 'jng-search-input',
+      class: 'jng-search-input jng-uppercase',
       type: 'text',
       placeholder: 'Enter tail number (e.g. N29ZR)',
       autocomplete: 'off',
