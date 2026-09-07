@@ -77,12 +77,16 @@ async function jetnetRequest(path, { method = 'GET', body } = {}) {
     ({ res, data } = await doCall(tokens));
   }
 
+  // Some endpoints (e.g. getRegNumber) return a non-2xx HTTP status *and* a
+  // JETNET responsestatus explaining why -- prefer that message when present,
+  // since it's the actually useful one; only fall back to a bare HTTP error
+  // when JETNET gave us nothing to go on.
+  if (String(data.responsestatus || '').toUpperCase().includes('ERROR')) {
+    throw new Error(`JETNET greška: ${data.responsestatus}`);
+  }
   if (!res.ok) {
     const bodyPreview = data._rawBody ? data._rawBody.slice(0, 300) : JSON.stringify(data).slice(0, 300);
     throw new Error(`JETNET HTTP ${res.status} za ${path} -- ${bodyPreview}`);
-  }
-  if (String(data.responsestatus || '').toUpperCase().includes('ERROR')) {
-    throw new Error(`JETNET greška: ${data.responsestatus}`);
   }
   return data;
 }

@@ -19,8 +19,10 @@ exports.handler = async (event) => {
 
     return json(200, { aircraft: data.aircraftresult || null });
   } catch (err) {
-    const msg = err.message || 'Lookup failed.';
-    const notFound = /NOT FOUND/i.test(msg);
-    return json(notFound ? 404 : 502, { error: notFound ? 'No aircraft found for that registration.' : msg });
+    // getRegNumber's only real failure mode in practice is "that
+    // registration doesn't resolve" (invalid, deregistered, mistyped) --
+    // JETNET reports it as an ERROR responsestatus, sometimes alongside a
+    // non-2xx HTTP status. Treat all of it as a plain not-found for the widget.
+    return json(404, { error: 'No aircraft found for that registration. Double-check the tail number.' });
   }
 };
