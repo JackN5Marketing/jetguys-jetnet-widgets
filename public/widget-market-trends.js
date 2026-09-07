@@ -3,16 +3,17 @@
 
   var STYLE = '\
 .jng-widget{font-family:"Urbanist",-apple-system,sans-serif;color:#141212;max-width:100%;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:14px;padding:24px 26px}\
-.jng-widget *{box-sizing:border-box}\
+.jng-widget *{box-sizing:border-box;font-family:inherit;font-style:normal;line-height:1.5;text-decoration:none}\
 .jng-eyebrow{display:inline-flex;align-items:center;gap:10px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;padding:6px 18px 6px 6px;margin:0 0 18px;font-size:13px;font-weight:400;color:#141212}\
-.jng-eyebrow .dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
+.jng-eyebrow .jng-dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
 .jng-search{position:relative;max-width:420px}\
 .jng-search-input{width:100%;padding:12px 20px;font-size:15px;font-family:inherit;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212}\
 .jng-search-input:focus{border-color:#b59e27;box-shadow:0 0 0 3px rgba(181,158,39,.15)}\
 .jng-suggestions{position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border:.8px solid rgba(0,0,0,.15);border-radius:16px;max-height:280px;overflow-y:auto;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px}\
 .jng-suggestion{padding:10px 14px;cursor:pointer;font-size:14px;border-radius:10px}\
 .jng-suggestion:hover,.jng-suggestion.jng-active{background:rgba(181,158,39,.08)}\
-.jng-suggestion small{display:block;color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
+.jng-sub-main{display:block;color:#141212}\
+.jng-suggestion .jng-sub{display:block;color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
 .jng-selected{display:flex;align-items:center;gap:18px;margin:4px 0 20px;flex-wrap:wrap}\
 .jng-selected[hidden]{display:none}\
 .jng-selected-label{font-family:"Inter",sans-serif;font-size:20px;font-weight:300;letter-spacing:-.02em;color:#141212}\
@@ -20,8 +21,8 @@
 .jng-clear:hover{border-color:#b59e27;color:#b59e27}\
 .jng-market-summary{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px}\
 .jng-stat{min-width:120px;flex:1 1 120px;border:.8px solid rgba(0,0,0,.15);border-top:3px solid #b59e27;border-radius:12px;padding:12px 14px;background:#fff}\
-.jng-stat .v{font-family:"Inter",sans-serif;font-size:20px;font-weight:500;color:#141212}\
-.jng-stat .l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
+.jng-stat .jng-stat-v{font-family:"Inter",sans-serif;font-size:20px;font-weight:500;color:#141212}\
+.jng-stat .jng-stat-l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
 .jng-table{width:100%;border-collapse:collapse;font-size:13px}\
 .jng-table th{text-align:left;font-weight:600;color:#141212;padding:7px 8px;border-bottom:2px solid #b59e27;white-space:nowrap}\
 .jng-table td{padding:7px 8px;border-bottom:1px solid rgba(0,0,0,.1);vertical-align:top;color:#141212}\
@@ -103,20 +104,20 @@
 
     var summary = el('div', { class: 'jng-market-summary' }, [
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: fmtMoney(latest.avg_asking_price) }),
-        el('div', { class: 'l', html: 'Avg. asking price' }),
+        el('div', { class: 'jng-stat-v', html: fmtMoney(latest.avg_asking_price) }),
+        el('div', { class: 'jng-stat-l', html: 'Avg. asking price' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: String(latest.aircraft_for_sale_count != null ? latest.aircraft_for_sale_count : '—') }),
-        el('div', { class: 'l', html: 'For sale now' }),
+        el('div', { class: 'jng-stat-v', html: String(latest.aircraft_for_sale_count != null ? latest.aircraft_for_sale_count : '—') }),
+        el('div', { class: 'jng-stat-l', html: 'For sale now' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: String(latest.avg_daysonmarket != null ? latest.avg_daysonmarket : '—') }),
-        el('div', { class: 'l', html: 'Avg. days on market' }),
+        el('div', { class: 'jng-stat-v', html: String(latest.avg_daysonmarket != null ? latest.avg_daysonmarket : '—') }),
+        el('div', { class: 'jng-stat-l', html: 'Avg. days on market' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: String(latest.in_operation_count != null ? latest.in_operation_count : '—') }),
-        el('div', { class: 'l', html: 'In operation' }),
+        el('div', { class: 'jng-stat-v', html: String(latest.in_operation_count != null ? latest.in_operation_count : '—') }),
+        el('div', { class: 'jng-stat-l', html: 'In operation' }),
       ]),
     ]);
     container.appendChild(summary);
@@ -163,7 +164,7 @@
     root.classList.add('jng-widget');
 
     root.appendChild(
-      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'dot' }), document.createTextNode('Market Trends')])
+      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'jng-dot' }), document.createTextNode('Market Trends')])
     );
 
     var input = el('input', {
@@ -233,8 +234,8 @@
       }
       models.forEach(function (m) {
         var item = el('div', { class: 'jng-suggestion' }, [
-          el('span', { html: m.make + ' ' + m.model }),
-          el('small', { html: [m.categorysize, m.weightclass].filter(Boolean).join(' · ') }),
+          el('span', { class: 'jng-sub-main', html: m.make + ' ' + m.model }),
+          el('span', { class: 'jng-sub', html: [m.categorysize, m.weightclass].filter(Boolean).join(' · ') }),
         ]);
         item.addEventListener('click', function () {
           suggestions.hidden = true;

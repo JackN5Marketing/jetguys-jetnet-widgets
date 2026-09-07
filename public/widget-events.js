@@ -3,26 +3,27 @@
 
   var STYLE = '\
 .jng-widget{font-family:"Urbanist",-apple-system,sans-serif;color:#141212;max-width:100%;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:14px;padding:24px 26px}\
-.jng-widget *{box-sizing:border-box}\
+.jng-widget *{box-sizing:border-box;font-family:inherit;font-style:normal;line-height:1.5;text-decoration:none}\
 .jng-eyebrow{display:inline-flex;align-items:center;gap:10px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;padding:6px 18px 6px 6px;margin:0 0 18px;font-size:13px;font-weight:400;color:#141212}\
-.jng-eyebrow .dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
+.jng-eyebrow .jng-dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
 .jng-search{position:relative;max-width:420px}\
 .jng-search-input{width:100%;padding:12px 20px;font-size:15px;font-family:inherit;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212}\
 .jng-search-input:focus{border-color:#b59e27;box-shadow:0 0 0 3px rgba(181,158,39,.15)}\
 .jng-suggestions{position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border:.8px solid rgba(0,0,0,.15);border-radius:16px;max-height:280px;overflow-y:auto;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px}\
 .jng-suggestion{padding:10px 14px;cursor:pointer;font-size:14px;border-radius:10px}\
+.jng-sub-main{display:block;font-family:inherit;color:#141212}\
 .jng-suggestion:hover,.jng-suggestion.jng-active{background:rgba(181,158,39,.08)}\
-.jng-suggestion small{display:block;color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
+.jng-suggestion .jng-sub{display:block;font-family:inherit;color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
 .jng-selected{display:flex;align-items:center;gap:18px;margin:4px 0 20px;flex-wrap:wrap}\
 .jng-selected[hidden]{display:none}\
 .jng-selected-label{font-family:"Inter",sans-serif;font-size:20px;font-weight:300;letter-spacing:-.02em;color:#141212}\
 .jng-clear{border:.8px solid rgba(0,0,0,.15);background:#fff;color:#141212;cursor:pointer;font-size:13px;font-family:inherit;padding:9px 20px;border-radius:1000px}\
 .jng-clear:hover{border-color:#b59e27;color:#b59e27}\
 .jng-events-list{list-style:none;margin:0;padding:0;max-height:340px;overflow-y:auto}\
-.jng-events-list li{padding:12px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;border-left:3px solid #b59e27;padding-left:12px}\
+.jng-events-list li{padding:12px 4px;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.5;border-left:3px solid #b59e27;padding-left:12px}\
 .jng-events-list li:last-child{border-bottom:none}\
-.jng-events-list .subject{font-weight:600;color:#141212}\
-.jng-events-list .meta{color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
+.jng-events-list .jng-ev-subject{font-family:inherit;font-weight:600;color:#141212}\
+.jng-events-list .jng-ev-meta{font-family:inherit;color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
 .jng-status{margin-top:12px;font-size:13px;color:rgba(20,18,18,.55)}\
 .jng-status.jng-error{color:#141212;font-weight:600}\
 .jng-status.jng-error:before{content:"\\26A0  "}\
@@ -96,8 +97,8 @@
     events.slice(0, 30).forEach(function (e) {
       list.appendChild(
         el('li', {}, [
-          el('div', { class: 'subject', html: (e.subject || 'Event') + (e.regnbr ? ' — ' + e.regnbr : '') }),
-          el('div', { class: 'meta', html: fmtDate(e.date) + (e.description ? ' · ' + e.description : '') }),
+          el('div', { class: 'jng-ev-subject', html: (e.subject || 'Event') + (e.regnbr ? ' — ' + e.regnbr : '') }),
+          el('div', { class: 'jng-ev-meta', html: fmtDate(e.date) + (e.description ? ' · ' + e.description : '') }),
         ])
       );
     });
@@ -116,7 +117,7 @@
     root.classList.add('jng-widget');
 
     root.appendChild(
-      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'dot' }), document.createTextNode('Recent Events')])
+      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'jng-dot' }), document.createTextNode('Recent Events')])
     );
 
     var input = el('input', {
@@ -186,8 +187,8 @@
       }
       models.forEach(function (m) {
         var item = el('div', { class: 'jng-suggestion' }, [
-          el('span', { html: m.make + ' ' + m.model }),
-          el('small', { html: [m.categorysize, m.weightclass].filter(Boolean).join(' · ') }),
+          el('span', { class: 'jng-sub-main', html: m.make + ' ' + m.model }),
+          el('span', { class: 'jng-sub', html: [m.categorysize, m.weightclass].filter(Boolean).join(' · ') }),
         ]);
         item.addEventListener('click', function () {
           suggestions.hidden = true;

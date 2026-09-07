@@ -3,9 +3,9 @@
 
   var STYLE = '\
 .jng-widget{font-family:"Urbanist",-apple-system,sans-serif;color:#141212;max-width:100%;box-sizing:border-box;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:14px;padding:24px 26px}\
-.jng-widget *{box-sizing:border-box}\
+.jng-widget *{box-sizing:border-box;font-family:inherit;font-style:normal;line-height:1.5;text-decoration:none}\
 .jng-eyebrow{display:inline-flex;align-items:center;gap:10px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;padding:6px 18px 6px 6px;margin:0 0 18px;font-size:13px;font-weight:400;color:#141212}\
-.jng-eyebrow .dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
+.jng-eyebrow .jng-dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
 .jng-lookup-row{display:flex;gap:10px;max-width:420px}\
 .jng-lookup-row[hidden]{display:none}\
 .jng-search-input{flex:1;padding:12px 20px;font-size:15px;font-family:inherit;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212}\
@@ -20,14 +20,14 @@
 .jng-selected-label{font-family:"Inter",sans-serif;font-size:20px;font-weight:300;letter-spacing:-.02em;color:#141212}\
 .jng-ac-summary{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px}\
 .jng-stat{min-width:130px;flex:1 1 130px;border:.8px solid rgba(0,0,0,.15);border-top:3px solid #b59e27;border-radius:12px;padding:12px 14px;background:#fff}\
-.jng-stat .v{font-family:"Inter",sans-serif;font-size:18px;font-weight:500;color:#141212}\
-.jng-stat .l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
+.jng-stat .jng-stat-v{font-family:"Inter",sans-serif;font-size:18px;font-weight:500;color:#141212}\
+.jng-stat .jng-stat-l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
 .jng-companies{list-style:none;margin:0;padding:0}\
-.jng-companies li{padding:12px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;border-left:3px solid #b59e27;padding-left:12px}\
+.jng-companies li{padding:12px 0;border-bottom:1px solid rgba(0,0,0,.1);font-size:13px;line-height:1.5;border-left:3px solid #b59e27;padding-left:12px}\
 .jng-companies li:last-child{border-bottom:none}\
-.jng-companies .role{font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.03em;color:#b59e27}\
-.jng-companies .name{font-family:"Inter",sans-serif;font-weight:500;color:#141212;margin-top:2px}\
-.jng-companies .meta{color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
+.jng-companies .jng-role{font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.03em;color:#b59e27}\
+.jng-companies .jng-name{font-family:"Inter",sans-serif;font-weight:500;color:#141212;margin-top:2px}\
+.jng-companies .jng-meta{color:rgba(20,18,18,.55);font-size:12px;margin-top:2px}\
 .jng-status{margin-top:12px;font-size:13px;color:rgba(20,18,18,.55)}\
 .jng-status.jng-error{color:#141212;font-weight:600}\
 .jng-status.jng-error:before{content:"\\26A0  "}\
@@ -82,36 +82,36 @@
 
     var summary = el('div', { class: 'jng-ac-summary' }, [
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: [ac.yearmfr, ac.make, ac.model].filter(Boolean).join(' ') || '—' }),
-        el('div', { class: 'l', html: 'Aircraft' }),
+        el('div', { class: 'jng-stat-v', html: [ac.yearmfr, ac.make, ac.model].filter(Boolean).join(' ') || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Aircraft' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.serialnbr || '—' }),
-        el('div', { class: 'l', html: 'Serial #' }),
+        el('div', { class: 'jng-stat-v', html: ac.serialnbr || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Serial #' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.categorysize || ac.weightclass || '—' }),
-        el('div', { class: 'l', html: 'Category' }),
+        el('div', { class: 'jng-stat-v', html: ac.categorysize || ac.weightclass || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Category' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.baseairport || ac.baseicao || '—' }),
-        el('div', { class: 'l', html: 'Base airport' }),
+        el('div', { class: 'jng-stat-v', html: ac.baseairport || ac.baseicao || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Base airport' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.ownership || '—' }),
-        el('div', { class: 'l', html: 'Ownership' }),
+        el('div', { class: 'jng-stat-v', html: ac.ownership || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Ownership' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.usage || '—' }),
-        el('div', { class: 'l', html: 'Usage' }),
+        el('div', { class: 'jng-stat-v', html: ac.usage || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Usage' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.maintained || '—' }),
-        el('div', { class: 'l', html: 'Maintained' }),
+        el('div', { class: 'jng-stat-v', html: ac.maintained || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'Maintained' }),
       ]),
       el('div', { class: 'jng-stat' }, [
-        el('div', { class: 'v', html: ac.icaotype || '—' }),
-        el('div', { class: 'l', html: 'ICAO type' }),
+        el('div', { class: 'jng-stat-v', html: ac.icaotype || '—' }),
+        el('div', { class: 'jng-stat-l', html: 'ICAO type' }),
       ]),
     ]);
     container.appendChild(summary);
@@ -127,9 +127,9 @@
         if (contact) metaParts.push(contact + (r.contacttitle ? ' (' + r.contacttitle + ')' : ''));
         list.appendChild(
           el('li', {}, [
-            el('div', { class: 'role', html: r.companyrelation || 'Related company' }),
-            el('div', { class: 'name', html: r.companyname || '—' }),
-            metaParts.length ? el('div', { class: 'meta', html: metaParts.join(' · ') }) : null,
+            el('div', { class: 'jng-role', html: r.companyrelation || 'Related company' }),
+            el('div', { class: 'jng-name', html: r.companyname || '—' }),
+            metaParts.length ? el('div', { class: 'jng-meta', html: metaParts.join(' · ') }) : null,
           ])
         );
       });
@@ -149,7 +149,7 @@
     root.classList.add('jng-widget');
 
     root.appendChild(
-      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'dot' }), document.createTextNode('Tail Number Lookup')])
+      el('div', { class: 'jng-eyebrow' }, [el('span', { class: 'jng-dot' }), document.createTextNode('Tail Number Lookup')])
     );
 
     var input = el('input', {
