@@ -52,12 +52,11 @@ async function jetnetRequest(path, { method = 'GET', body } = {}) {
 
   const doCall = async (t) => {
     const url = `${BASE}${path.replace('{apiToken}', t.apiToken)}`;
+    const headers = { Authorization: `Bearer ${t.bearerToken}` };
+    if (body !== undefined) headers['Content-Type'] = 'application/json';
     const res = await fetch(url, {
       method,
-      headers: {
-        Authorization: `Bearer ${t.bearerToken}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
     let data = {};
