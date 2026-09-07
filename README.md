@@ -89,23 +89,23 @@ redosledu:
 <!-- Market Trends -->
 <div
   data-jng-market-trends
-  data-api-base="https://JETGUYS-NETLIFY-SITE.netlify.app/.netlify/functions"
+  data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
 ></div>
-<script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-market-trends.js"></script>
+<script src="https://the-jetguys-widgets.netlify.app/widget-market-trends.js"></script>
 
 <!-- Recent Events -->
 <div
   data-jng-events
-  data-api-base="https://JETGUYS-NETLIFY-SITE.netlify.app/.netlify/functions"
+  data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
 ></div>
-<script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-events.js"></script>
+<script src="https://the-jetguys-widgets.netlify.app/widget-events.js"></script>
 
 <!-- Tail Number Lookup -->
 <div
   data-jng-tail-lookup
-  data-api-base="https://JETGUYS-NETLIFY-SITE.netlify.app/.netlify/functions"
+  data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
 ></div>
-<script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-tail-lookup.js"></script>
+<script src="https://the-jetguys-widgets.netlify.app/widget-tail-lookup.js"></script>
 ```
 
 Zameniti `JETGUYS-NETLIFY-SITE` stvarnim Netlify domenom (ili custom
