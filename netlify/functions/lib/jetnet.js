@@ -59,11 +59,12 @@ async function jetnetRequest(path, { method = 'GET', body } = {}) {
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
+    const raw = await res.text();
     let data = {};
     try {
-      data = await res.json();
+      data = JSON.parse(raw);
     } catch {
-      // non-JSON body, fall through with empty object
+      data = { _rawBody: raw };
     }
     return { res, data };
   };
@@ -77,7 +78,8 @@ async function jetnetRequest(path, { method = 'GET', body } = {}) {
   }
 
   if (!res.ok) {
-    throw new Error(`JETNET HTTP ${res.status} za ${path}`);
+    const bodyPreview = data._rawBody ? data._rawBody.slice(0, 300) : JSON.stringify(data).slice(0, 300);
+    throw new Error(`JETNET HTTP ${res.status} za ${path} -- ${bodyPreview}`);
   }
   if (String(data.responsestatus || '').toUpperCase().includes('ERROR')) {
     throw new Error(`JETNET greška: ${data.responsestatus}`);
