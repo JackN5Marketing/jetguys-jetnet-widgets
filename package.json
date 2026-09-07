@@ -2,8 +2,5 @@
   "name": "jetguys-jetnet-widgets",
   "version": "1.0.0",
   "private": true,
-  "description": "Netlify Functions proxy + embeddable Webflow widget for JETNET Connect market data (JetGuys)",
-  "dependencies": {
-    "@netlify/blobs": "^8.1.0"
-  }
+  "description": "Netlify Functions proxy + embeddable Webflow widget for JETNET Connect market data (JetGuys)"
 }

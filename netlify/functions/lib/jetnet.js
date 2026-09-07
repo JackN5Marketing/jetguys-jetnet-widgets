@@ -1,18 +1,13 @@
-const { getStore } = require('@netlify/blobs');
-
 const BASE = 'https://customer.jetnetconnect.com';
-const TOKEN_KEY = 'tokens';
 // JETNET tokens live ~60 min; we stop trusting a cached token 5 min before that.
 const TOKEN_TTL_MS = 60 * 60 * 1000;
 const REFRESH_MARGIN_MS = 5 * 60 * 1000;
 
-function tokenStore() {
-  return getStore('jetnet-auth');
-}
-
-function cacheStore() {
-  return getStore('jetnet-cache');
-}
+// In-memory only: persists across warm invocations of the same function
+// container, reset on cold start. Avoids depending on Netlify Blobs, which
+// needs extra account-level configuration this project doesn't otherwise need.
+let tokenCache = null;
+const dataCache = new Map();
 
 async function login() {
   const email = process.env.JETNET_EMAIL;
@@ -36,21 +31,17 @@ async function login() {
     throw new Error('JETNET login odgovor nema tokene');
   }
 
-  const record = {
+  tokenCache = {
     bearerToken: data.bearerToken,
     apiToken: data.apiToken,
     fetchedAt: Date.now(),
   };
-  await tokenStore().setJSON(TOKEN_KEY, record);
-  return record;
+  return tokenCache;
 }
 
 async function getTokens({ forceRefresh = false } = {}) {
-  if (!forceRefresh) {
-    const cached = await tokenStore().get(TOKEN_KEY, { type: 'json' });
-    if (cached && Date.now() - cached.fetchedAt < TOKEN_TTL_MS - REFRESH_MARGIN_MS) {
-      return cached;
-    }
+  if (!forceRefresh && tokenCache && Date.now() - tokenCache.fetchedAt < TOKEN_TTL_MS - REFRESH_MARGIN_MS) {
+    return tokenCache;
   }
   return login();
 }
@@ -97,14 +88,14 @@ async function jetnetRequest(path, { method = 'GET', body } = {}) {
 
 // Short server-side cache in front of JETNET so repeated widget loads for the
 // same model don't re-hit the API (and stay well under the ~60 req/min limit).
+// Same in-memory-per-container caveat as the token cache above.
 async function cached(key, ttlMs, fn) {
-  const store = cacheStore();
-  const hit = await store.get(key, { type: 'json' });
+  const hit = dataCache.get(key);
   if (hit && Date.now() - hit.savedAt < ttlMs) {
     return hit.data;
   }
   const data = await fn();
-  await store.setJSON(key, { data, savedAt: Date.now() });
+  dataCache.set(key, { data, savedAt: Date.now() });
   return data;
 }
 

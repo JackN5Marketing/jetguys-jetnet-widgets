@@ -10,7 +10,7 @@ da se ubaci bilo gde, nezavisno od ostalih.
 
 ```
 netlify/functions/
-  lib/jetnet.js        login + token cache (Netlify Blobs) + response-status provera
+  lib/jetnet.js        login + in-memory token cache + response-status provera
   lib/http.js          CORS + JSON helperi
   models.js            GET  /models?q=citation&limit=15        -> autocomplete pretraga modela
   market-trends.js     GET  /market-trends?modelid=40&months=12 -> getModelMarketTrends
@@ -25,7 +25,9 @@ public/
 
 JETNET email/password nikad ne izlaze iz Netlify funkcija -- Webflow zove
 samo naše `/.netlify/functions/*` endpointe, koji drže i osvežavaju
-`bearerToken`/`apiToken` u Netlify Blobs storage-u (traju ~60 min).
+`bearerToken`/`apiToken` u memoriji funkcije (traju ~60 min). Keš je
+per-container (resetuje se na cold start), što je dovoljno da drastično
+smanji broj poziva ka JETNET-u bez ikakve dodatne Netlify konfiguracije.
 
 ## Stil (brend)
 
@@ -49,9 +51,7 @@ treba da ima belu pozadinu da se kartice lepo ističu.
    - `JETNET_PASSWORD`
    - `ALLOWED_ORIGIN` -- domen Webflow sajta, npr. `https://www.jetguys.com`
      (dok testiraš možeš ostaviti `*`, suziti pre nego što ide live)
-4. Netlify Blobs je automatski dostupan na svakom sajtu, nije potreban
-   dodatni setup.
-5. Klikni **Deploy site**. Netlify ti odmah daje `*.netlify.app` URL --
+4. Klikni **Deploy site**. Netlify ti odmah daje `*.netlify.app` URL --
    to je već "live" i javno dostupno, samo pod Netlify domenom umesto
    `jetguys.com`.
 
