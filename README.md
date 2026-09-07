@@ -1,10 +1,15 @@
 # JetGuys — JETNET widgets
 
 Netlify Functions proxy + tri nezavisna embeddable JS widgeta koji na
-JetGuys Webflow sajtu prikazuju JETNET Connect podatke po modelu aviona:
-tržišni trendovi (market trends), događaji (events) i retail transakcije
-(history). Svaki widget je samostalan -- ima svoju pretragu modela i može
-da se ubaci bilo gde, nezavisno od ostalih.
+JetGuys Webflow sajtu prikazuju JETNET Connect podatke: tržišni trendovi po
+modelu (market trends), događaji po modelu (events), i pretraga aviona po
+registraciji (tail number lookup). Svaki widget je samostalan i može da se
+ubaci bilo gde, nezavisno od ostalih.
+
+> Retail Transactions (`getHistoryListPaged`) je uklonjen -- JETNET nalog
+> vraća `ERROR: HISTORY NOT AVAILABLE FOR SUBSCRIPTION` (History nije deo
+> trenutnog pretplatničkog nivoa). Zamenjen je Tail Number Lookup-om, koji
+> je u osnovnom (Tier 1) nivou i radi bez ograničenja.
 
 ## Arhitektura
 
@@ -15,11 +20,11 @@ netlify/functions/
   models.js            GET  /models?q=citation&limit=15        -> autocomplete pretraga modela
   market-trends.js     GET  /market-trends?modelid=40&months=12 -> getModelMarketTrends
   events.js            GET  /events?modelid=40&days=180         -> getEventListPaged
-  history.js           GET  /history?modelid=40&months=12       -> getHistoryListPaged (retail filter)
+  aircraft.js           GET  /aircraft?reg=N29ZR                 -> getRegNumber (tail lookup)
 public/
   widget-market-trends.js   samostalan widget -- pretraga modela + Market Trends panel
   widget-events.js          samostalan widget -- pretraga modela + Recent Events panel
-  widget-history.js         samostalan widget -- pretraga modela + Retail Transactions panel
+  widget-tail-lookup.js     samostalan widget -- unos registracije + podaci o avionu i vlasniku
   index.html                lokalna test stranica, sva tri widgeta jedno ispod drugog
 ```
 
@@ -59,14 +64,17 @@ treba da ima belu pozadinu da se kartice lepo ističu.
 
 Čim se deploy završi, otvori `https://TVOJ-SAJT.netlify.app/` u browseru --
 to je `public/index.html` sa sva tri widgeta. Ukucaj naziv modela (npr.
-"Excel" ili "G650") u bilo koji od njih; ako se pojave predlozi i posle
-klika učitaju podaci, cela veza JETNET → Netlify Function → widget radi.
+"Excel" ili "G650") u prva dva, ili registraciju (npr. "N29ZR") u treći;
+ako se pojave podaci, cela veza JETNET → Netlify Function → widget radi.
 
 Ako nešto ne radi:
 - **Netlify Dashboard > Functions**, otvori log konkretne funkcije
-  (`models`, `market-trends`, `events`, `history`) da vidiš grešku.
+  (`models`, `market-trends`, `events`, `aircraft`) da vidiš grešku.
 - Najčešći uzrok: `JETNET_EMAIL`/`JETNET_PASSWORD` nisu setovani ili su
   pogrešni -- login tada baca grešku vidljivu u function logu.
+- Greška tipa `ERROR: ... NOT AVAILABLE FOR SUBSCRIPTION` znači da taj
+  endpoint nije uključen u JETNET pretplatu -- nije bug, treba proveriti
+  nivo pretplate kod JETNET-a ako je taj podatak neophodan.
 - Posle svake izmene environment varijable potrebno je pokrenuti novi
   deploy (**Deploys > Trigger deploy > Deploy site**) da je funkcije
   pokupe.
@@ -92,12 +100,12 @@ redosledu:
 ></div>
 <script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-events.js"></script>
 
-<!-- Retail Transactions -->
+<!-- Tail Number Lookup -->
 <div
-  data-jng-history
+  data-jng-tail-lookup
   data-api-base="https://JETGUYS-NETLIFY-SITE.netlify.app/.netlify/functions"
 ></div>
-<script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-history.js"></script>
+<script src="https://JETGUYS-NETLIFY-SITE.netlify.app/widget-tail-lookup.js"></script>
 ```
 
 Zameniti `JETGUYS-NETLIFY-SITE` stvarnim Netlify domenom (ili custom
@@ -117,9 +125,12 @@ funkcije radile.
 
 ## Poznata ograničenja / sledeći koraci
 
-- `history` i `events` vraćaju prvih 200 zapisa po pozivu (nema "load more"
-  paginacije u widgetu) -- dovoljno za prikaz na sajtu, ali ne za bulk izvoz.
-- Rate limit na JETNET nalogu je ~60 req/min; server-side cache (30-60 min
+- `events` vraća prvih 200 zapisa po pozivu (nema "load more" paginacije u
+  widgetu) -- dovoljno za prikaz na sajtu, ali ne za bulk izvoz.
+- Rate limit na JETNET nalogu je ~60 req/min; server-side cache (10-60 min
   po endpointu) drži widgete daleko ispod toga i pri više istovremenih
   posetilaca.
 - `ALLOWED_ORIGIN` treba suziti na stvarni Webflow domen pre produkcije.
+- Retail Transactions se može vratiti kasnije ako se JETNET pretplata
+  nadogradi na nivo koji uključuje History (`getHistoryListPaged`) --
+  kod je i dalje u git istoriji ako zatreba.

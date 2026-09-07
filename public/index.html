@@ -12,16 +12,16 @@
 </head>
 <body>
   <h1>JETNET widgets — local preview</h1>
-  <p>Search for a model (e.g. "Excel", "Citation", "G650") in each widget to test the live data flow through the Netlify functions. Three independent widgets, stacked.</p>
+  <p>Search for a model (e.g. "Excel", "Citation", "G650") in the first two widgets, or a tail number (e.g. "N29ZR") in the last one. Three independent widgets, stacked.</p>
 
   <div class="stack">
     <div data-jng-market-trends data-api-base="/.netlify/functions"></div>
     <div data-jng-events data-api-base="/.netlify/functions"></div>
-    <div data-jng-history data-api-base="/.netlify/functions"></div>
+    <div data-jng-tail-lookup data-api-base="/.netlify/functions"></div>
   </div>
 
   <script src="/widget-market-trends.js"></script>
   <script src="/widget-events.js"></script>
-  <script src="/widget-history.js"></script>
+  <script src="/widget-tail-lookup.js"></script>
 </body>
 </html>
