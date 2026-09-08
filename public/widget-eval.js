@@ -26,7 +26,7 @@
 .jng-stat .jng-stat-v{font-family:"Inter",sans-serif;font-size:18px;font-weight:500;color:#141212}\
 .jng-stat .jng-stat-l{font-size:12px;color:rgba(20,18,18,.55);margin-top:2px}\
 .jng-eval-note{font-size:13px;color:#141212;background:rgba(181,158,39,.08);border-radius:10px;padding:14px 16px;margin-bottom:18px}\
-.jng-eval-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:1000px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;font-size:14px;cursor:pointer;width:100%;justify-content:center}\
+.jng-eval-cta{-webkit-appearance:none;appearance:none;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:1000px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;font-size:14px;cursor:pointer;width:100%;justify-content:center}\
 .jng-eval-cta:hover{background:#a08c22;border-color:#a08c22}\
 .jng-eval-disclaimer{font-size:11px;color:rgba(20,18,18,.5);margin-top:12px;text-align:center}\
 .jng-status{margin-top:12px;font-size:13px;color:rgba(20,18,18,.55)}\
@@ -143,7 +143,7 @@
     }
 
     container.appendChild(
-      el('a', { class: 'jng-eval-cta', href: '#quote', 'data-jg-open': 'appraisal-modal' }, [
+      el('button', { class: 'jng-eval-cta', type: 'button', 'data-jg-open': 'appraisal-modal' }, [
         document.createTextNode('Request a Certified Appraisal'),
       ])
     );

@@ -28,7 +28,7 @@
 .jng-hero-range .value{font-family:"Inter",sans-serif;font-size:30px;font-weight:300;color:#f5f5f4}\
 .jng-hero-range .sub{font-size:12px;color:rgba(245,245,244,.6);margin-top:6px}\
 .jng-hero-note{font-size:13px;color:#f5f5f4;background:rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:18px}\
-.jng-hero-cta{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 26px;border-radius:999px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;font-size:14px;cursor:pointer;width:100%}\
+.jng-hero-cta{-webkit-appearance:none;appearance:none;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 26px;border-radius:999px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;font-size:14px;cursor:pointer;width:100%}\
 .jng-hero-cta:hover{background:#a08c22;border-color:#a08c22}\
 .jng-hero-disclaimer{font-size:11px;color:rgba(245,245,244,.5);margin-top:12px;text-align:center}\
 .jng-hero-status{margin-top:12px;font-size:13px;color:rgba(245,245,244,.65)}\
@@ -144,7 +144,7 @@
     }
 
     container.appendChild(
-      el('a', { class: 'jng-hero-cta', href: '#quote', 'data-jg-open': 'appraisal-modal' }, [document.createTextNode('Request a Certified Appraisal')])
+      el('button', { class: 'jng-hero-cta', type: 'button', 'data-jg-open': 'appraisal-modal' }, [document.createTextNode('Request a Certified Appraisal')])
     );
     container.appendChild(
       el('div', { class: 'jng-hero-disclaimer', html: 'Preliminary estimate based on current market listings, not a formal appraisal.' })
