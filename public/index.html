@@ -8,6 +8,8 @@
     body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; background: #fff; color: #111; }
     h1 { font-size: 20px; }
     .stack { display: flex; flex-direction: column; gap: 24px; margin-top: 24px; }
+    .hero-demo { background: #141212; padding: 60px 40px; border-radius: 14px; margin-top: 40px; }
+    .hero-demo h2 { color: #fff; font-family: Georgia, serif; font-weight: 300; font-size: 32px; margin: 0 0 24px; }
   </style>
 </head>
 <body>
@@ -21,9 +23,15 @@
     <div data-jng-eval data-api-base="/.netlify/functions"></div>
   </div>
 
+  <div class="hero-demo">
+    <h2>Precision Aircraft Evaluations</h2>
+    <div data-jng-eval-hero data-api-base="/.netlify/functions"></div>
+  </div>
+
   <script src="./widget-market-trends.js"></script>
   <script src="./widget-events.js"></script>
   <script src="./widget-tail-lookup.js"></script>
   <script src="./widget-eval.js"></script>
+  <script src="./widget-eval-hero.js"></script>
 </body>
 </html>

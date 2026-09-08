@@ -27,7 +27,10 @@ public/
   widget-events.js          samostalan widget -- pretraga modela + Recent Events panel
   widget-tail-lookup.js     samostalan widget -- unos registracije + podaci o avionu i vlasniku
   widget-eval.js            samostalan widget -- unos registracije + procena tržišne vrednosti (eValuation)
-  index.html                lokalna test stranica, sva četiri widgeta jedno ispod drugog
+  widget-eval-hero.js       ista logika kao widget-eval.js, ali stilizovano za tamni hero (providan
+                            "staklen" input + pill dugme), za ugradnju u postojeći search bar na
+                            New Homepage hero-u ("Enter your aircraft tail number")
+  index.html                lokalna test stranica, sva četiri widgeta jedno ispod drugog + hero varijanta
 ```
 
 `widget-eval.js` ne dodaje novi backend endpoint -- lančano poziva već
@@ -128,7 +131,21 @@ redosledu:
   data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
 ></div>
 <script src="https://the-jetguys-widgets.netlify.app/widget-eval.js"></script>
+
+<!-- Aircraft eValuation -- dark hero variant -->
+<div
+  data-jng-eval-hero
+  data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
+></div>
+<script src="https://the-jetguys-widgets.netlify.app/widget-eval-hero.js"></script>
 ```
+
+Za `widget-eval-hero.js`: na New Homepage-u zameniti postojeći statični
+"Enter your aircraft tail number" search embed ovim -- vizuelno je
+identičan (isti providni pill input, isto "GET YOUR APPRAISAL" dugme sa
+strelicom), samo što sad stvarno radi. Rezultat se otvara ispod kao
+"staklena" tamna kartica (`backdrop-filter: blur`), da se uklopi sa hero
+pozadinskom slikom umesto da prekine dizajn belom karticom.
 
 Zameniti `JETGUYS-NETLIFY-SITE` stvarnim Netlify domenom (ili custom
 domenom ako se doda). Svaki widget sam ubacuje svoj CSS -- staviti Embed
