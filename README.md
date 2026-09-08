@@ -1,10 +1,11 @@
 # JetGuys — JETNET widgets
 
-Netlify Functions proxy + tri nezavisna embeddable JS widgeta koji na
+Netlify Functions proxy + četiri nezavisna embeddable JS widgeta koji na
 JetGuys Webflow sajtu prikazuju JETNET Connect podatke: tržišni trendovi po
-modelu (market trends), događaji po modelu (events), i pretraga aviona po
-registraciji (tail number lookup). Svaki widget je samostalan i može da se
-ubaci bilo gde, nezavisno od ostalih.
+modelu (market trends), događaji po modelu (events), pretraga aviona po
+registraciji (tail number lookup), i procena tržišne vrednosti po registraciji
+(aircraft eValuation). Svaki widget je samostalan i može da se ubaci bilo gde,
+nezavisno od ostalih.
 
 > Retail Transactions (`getHistoryListPaged`) je uklonjen -- JETNET nalog
 > vraća `ERROR: HISTORY NOT AVAILABLE FOR SUBSCRIPTION` (History nije deo
@@ -25,8 +26,21 @@ public/
   widget-market-trends.js   samostalan widget -- pretraga modela + Market Trends panel
   widget-events.js          samostalan widget -- pretraga modela + Recent Events panel
   widget-tail-lookup.js     samostalan widget -- unos registracije + podaci o avionu i vlasniku
-  index.html                lokalna test stranica, sva tri widgeta jedno ispod drugog
+  widget-eval.js            samostalan widget -- unos registracije + procena tržišne vrednosti (eValuation)
+  index.html                lokalna test stranica, sva četiri widgeta jedno ispod drugog
 ```
+
+`widget-eval.js` ne dodaje novi backend endpoint -- lančano poziva već
+postojeće `/aircraft` (resolve tail -> model) i `/market-trends` (raspon
+cena za taj model) i prikazuje `low_asking_price`-`high_asking_price` kao
+procenjeni raspon, uz kvalitativnu napomenu na osnovu `avg_year` iz JETNET-a
+(da li je avion noviji/stariji od proseka flote). Namerno ne izmišlja
+jedan tačan broj po serijskom broju -- History tier (uporedive prodaje)
+nije u trenutnoj JETNET pretplati, pa je raspon tržišnog proseka jedina
+podržana procena. Dugme "Request a Certified Appraisal" ima
+`data-jg-open="appraisal-modal"` atribut -- kad je widget ubačen na pravi
+JetGuys sajt, otvara postojeći sajtov lead-capture modal (ista JS logika
+koja već pokreće modal iz header/footer dugmadi).
 
 JETNET email/password nikad ne izlaze iz Netlify funkcija -- Webflow zove
 samo naše `/.netlify/functions/*` endpointe, koji drže i osvežavaju
@@ -63,9 +77,10 @@ treba da ima belu pozadinu da se kartice lepo ističu.
 ### Kako odmah testirati da li radi
 
 Čim se deploy završi, otvori `https://TVOJ-SAJT.netlify.app/` u browseru --
-to je `public/index.html` sa sva tri widgeta. Ukucaj naziv modela (npr.
-"Excel" ili "G650") u prva dva, ili registraciju (npr. "N29ZR") u treći;
-ako se pojave podaci, cela veza JETNET → Netlify Function → widget radi.
+to je `public/index.html` sa sva četiri widgeta. Ukucaj naziv modela (npr.
+"Excel" ili "G650") u prva dva, ili registraciju (npr. "N29ZR") u treći i
+četvrti; ako se pojave podaci, cela veza JETNET → Netlify Function → widget
+radi.
 
 Ako nešto ne radi:
 - **Netlify Dashboard > Functions**, otvori log konkretne funkcije
@@ -106,6 +121,13 @@ redosledu:
   data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
 ></div>
 <script src="https://the-jetguys-widgets.netlify.app/widget-tail-lookup.js"></script>
+
+<!-- Aircraft eValuation -->
+<div
+  data-jng-eval
+  data-api-base="https://the-jetguys-widgets.netlify.app/.netlify/functions"
+></div>
+<script src="https://the-jetguys-widgets.netlify.app/widget-eval.js"></script>
 ```
 
 Zameniti `JETGUYS-NETLIFY-SITE` stvarnim Netlify domenom (ili custom
