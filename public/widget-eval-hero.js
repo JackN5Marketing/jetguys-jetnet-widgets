@@ -169,7 +169,7 @@
       autocomplete: 'off',
     });
     var btn = el('button', { class: 'jng-hero-btn', type: 'button' }, [
-      document.createTextNode('GET YOUR FREE OR COMPLIMENTARY EVALUATION'),
+      document.createTextNode('GET YOUR FREE EVALUATION'),
       el('span', { class: 'jng-hero-arrow' }),
     ]);
     var row = el('div', { class: 'jng-hero-row' }, [input, btn]);
