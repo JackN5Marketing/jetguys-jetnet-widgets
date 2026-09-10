@@ -6,9 +6,9 @@
 .jng-widget *{box-sizing:border-box;font-family:inherit;font-style:normal;line-height:1.5;text-decoration:none}\
 .jng-eyebrow{display:inline-flex;align-items:center;gap:10px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;padding:6px 18px 6px 6px;margin:0 0 18px;font-size:13px;font-weight:400;color:#141212}\
 .jng-eyebrow .jng-dot{width:18px;height:18px;border-radius:50%;background:#b59e27;flex-shrink:0}\
-.jng-lookup-row{display:flex;gap:10px;max-width:420px}\
+.jng-lookup-row{display:flex;gap:10px;max-width:420px;flex-wrap:wrap}\
 .jng-lookup-row[hidden]{display:none}\
-.jng-search-input{flex:1;padding:12px 20px;font-size:15px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212;text-transform:uppercase}\
+.jng-search-input{flex:1;min-width:200px;padding:12px 20px;font-size:15px;border:.8px solid rgba(0,0,0,.15);border-radius:1000px;outline:none;background:#fff;color:#141212;text-transform:uppercase}\
 .jng-search-input:focus{border-color:#b59e27;box-shadow:0 0 0 3px rgba(181,158,39,.15)}\
 .jng-lookup-btn{padding:12px 22px;font-size:14px;font-weight:400;border-radius:1000px;border:.8px solid #b59e27;background:#b59e27;color:#f5f5f4;cursor:pointer;white-space:nowrap}\
 .jng-lookup-btn:hover{background:#a08c22;border-color:#a08c22}\
